@@ -1,0 +1,58 @@
+---
+title: "Week 2 pres."
+author: "R08241220  Chen, Yen Ting"
+date: "2020/9/26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Sec. 1 Column extraction
+
+Did you know that you can extract columns by their names?
+Try type down the desired column name within quotation marks and brackets.
+```{r}
+iriss <- iris[sample(nrow(iris), 15),]
+iriss$Species    # method 1
+iriss[,5]        # method 2 
+iriss["Species"] # method 3
+```
+Yet something intersting occurs: method 3 does not return a character vector like the previous two; method 3 returns a part of the data frame.
+
+```{r}
+class(iris["Species"])
+```
+```{r}
+iris[c("Species", "Sepal.Width")]
+iris[Species,] # you need to quotate the column name, or as a default, R will recognize it as a object in the global environment.
+```
+
+
+
+So what are the implications?
+TBH, I'm not sure.
+
+
+## Sec. 2: Challenge
+
+Load the data and add a new column called pot.serial.number for the sake of identification.
+
+```{r, echo = T}
+rm(list = ls())
+# load
+ra <- read.table('https://raw.githubusercontent.com/vianneydenis/attentive-suricate/master/Data/rairuoho.txt', sep = "\t", header = T)
+# Reformat the table in order to have the day as a variable with 6 levels together with another variable called length. 
+ra$pot.serial.number <- 1:nrow(ra) # generates a new column for identification
+head(ra)
+```
+
+
+Now Im loading tidyr function for reshaping the data into a long format.
+
+```{r, echo = T}
+library(tidyr)
+rera <- ra %>% gather("day", "length", "day3", "day4", "day5", "day6", "day7", "day8")
+head(rera)
+```
+
