@@ -8,30 +8,79 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-## Sec. 1 Column extraction
+## **Reveiw: Data manipulation**
+I am going to take everyone to review some data extraction techniques.
 
+# Sec. 1 Matrix notation
+The following method uses a matrix-notation style -- object[# of rows, # of columns].
+
+```{r}
+a <- iris[sample(nrow(iris), 15),]
+a[1,]
+```
+
+
+```{r}
+a[,2]
+```
+
+```{r}
+a[1,2]
+```
+
+If there is no input of comma within the brackets, R reads it as a column by default.
+
+```{r}
+a[1]
+```
+
+Furthermore, adding a subtraction mark in front of the numbers removes the row/column.
+
+```{r}
+a[-1]
+```
+
+Here, a question emerges -- what pattern would be displayed if we put minus signs within the brackets?  
+```{r}
+a[1,2] #returns a single value 
+a[-1,2] # removes the first row and returned the second column.
+a[1,-2] # likewise, this line removes the second column and returned the first row.
+a[-1,-2] # This removes the first row and the second column of iris
+```
+The key takeaway here (at least that's what I thought) is that you cannot remove a single value by inputting minus signs in front of the indicators of rows and columns.
+
+What if you have the need to change up one number within the data frame?
+
+You can try this:
+```{r}
+b <- iris # setting up a data frame
+b[1,1] # returns 5.1
+b[1,1] <- 6.1 # inputting 6.1 into a[1,1]
+b[1,1]
+```
+
+## Something interesting: Column extraction
 Did you know that you can extract columns by their names?
+
 Try type down the desired column name within quotation marks and brackets.
+
 ```{r}
 iriss <- iris[sample(nrow(iris), 15),]
 iriss$Species    # method 1
 iriss[,5]        # method 2 
 iriss["Species"] # method 3
 ```
-Yet something intersting occurs: method 3 does not return a character vector like the previous two; method 3 returns a part of the data frame.
+Yet something interesting occurs: method 3 does not return a character vector like the previous two; method 3 returns a part of the data frame.
 
-```{r}
-class(iris["Species"])
+```{r, echo=T}
+class(iriss["Species"])
+iriss[c("Species", "Sepal.Width")]
+#iriss[Species,] 
+# you need to quotate the column name, or as a default, R will recognize it as a object in the global environment.
 ```
-```{r}
-iris[c("Species", "Sepal.Width")]
-iris[Species,] # you need to quotate the column name, or as a default, R will recognize it as a object in the global environment.
-```
-
-
 
 So what are the implications?
-TBH, I'm not sure.
+TBH, I'm not sure. Hope you guys can find that interesting. :)
 
 
 ## Sec. 2: Challenge
