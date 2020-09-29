@@ -2,7 +2,16 @@
 title: "Week 2 pres."
 author: "R08241220  Chen, Yen Ting"
 date: "2020/9/26"
-output: html_document
+output:  
+  "html_document":
+   theme: united
+   highlight: tango
+   toc: true
+   toc_depth: 3
+   toc_float: true
+   number_sections: false
+   code_folding: show
+    # ioslides_presentation 
 ---
 
 ```{r setup, include=FALSE}
@@ -52,7 +61,14 @@ The key takeaway here (at least that's what I thought) is that you cannot remove
 What if you have the need to change up one number within the data frame?
 
 You can try this:
-```{r}
+```{r, results='hide'}
+b <- iris # setting up a data frame
+b[1,1] # returns 5.1
+b[1,1] <- 6.1 # inputting 6.1 into a[1,1]
+b[1,1]
+```
+
+```{r, echo = F}
 b <- iris # setting up a data frame
 b[1,1] # returns 5.1
 b[1,1] <- 6.1 # inputting 6.1 into a[1,1]
@@ -75,6 +91,7 @@ Yet something interesting occurs: method 3 does not return a character vector li
 ```{r, echo=T}
 class(iriss["Species"])
 iriss[c("Species", "Sepal.Width")]
+#iriss["Sepal.Width":"Species"]
 #iriss[Species,] 
 # you need to quotate the column name, or as a default, R will recognize it as a object in the global environment.
 ```
@@ -83,7 +100,7 @@ So what are the implications?
 TBH, I'm not sure. Hope you guys can find that interesting. :)
 
 
-## Sec. 2: Challenge
+# Sec. 2: Challenge
 
 Load the data and add a new column called pot.serial.number for the sake of identification.
 
