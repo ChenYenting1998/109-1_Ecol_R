@@ -1,26 +1,36 @@
 # Week 3 presentation
-# create a vector
 rm(list = ls())
+# 1. ####
+#RP5: create the following data frame 
+#summarizing the results of a small experiment on 5 individuals 
+#testing the efficiency of a specific diet 
+#(drinking bubble tea only - feak data). 
 before_diet <- c(104, 95, 87, 77, 112)
 after_diet <- c(96, 91, 81, 75, 118)
-da <- data.frame(before_diet, after_diet)
-# create weight loss data (in %)
+individuals <- c("subject_1", "subject_2", 'subject_3', "subject_4", 'subject_5')
+cbind(before_diet, after_diet, individuals)
+da <- data.frame(before_diet, after_diet, row.names = names)
+da
+
+# 2.####
+# Create another vector with the weight loss (in %) 
+#associated with subject no. 
 da$weight_loss <- (after_diet/before_diet)*100
 da
 
-# add ind as a variable
-subject <- rep("subject",nrow(da))
-no. <- 1:nrow(da)
-subject <- paste(subject, no., sep = "_")
-da$individual <- subject
-
+# 3. ####
+# What can you say on this bubble tea diet? 
 # 4 ind. lose their weight
 summary(da)
 # mean weight drops by 4%
 
-# reformat the data
-# creating a new column for identity
-# add a new variable for two levels
+# Reformat the table by creating: 
+# a variable "individual" with the identity of the five individuals
+# a variable "diet" with two levels before and after
+# a variable "weight" containing the weight before and after the diet.
+
+# pivot_long
 library(tidyr)
-nd <- pivot_longer(da, before_diet:after_diet,
+da$individual <- row.names(da)
+nd1 <- pivot_longer(da, before_diet:after_diet,
              names_to = "diet" ,values_to = "weight")
