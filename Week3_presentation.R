@@ -9,7 +9,7 @@ before_diet <- c(104, 95, 87, 77, 112)
 after_diet <- c(96, 91, 81, 75, 118)
 individuals <- c("subject_1", "subject_2", 'subject_3', "subject_4", 'subject_5')
 cbind(before_diet, after_diet, individuals)
-da <- data.frame(before_diet, after_diet, row.names = names)
+da <- data.frame(before_diet, after_diet, row.names = individuals)
 da
 
 # 2.####
@@ -32,5 +32,7 @@ summary(da)
 # pivot_long
 library(tidyr)
 da$individual <- row.names(da)
-nd1 <- pivot_longer(da, before_diet:after_diet,
-             names_to = "diet" ,values_to = "weight")
+nd1 <- da %>% 
+  pivot_longer(before_diet:after_diet, names_to = "diet" ,values_to = "weight")
+nd1$diet <- as.factor(nd1$diet)
+
