@@ -1,0 +1,50 @@
+---
+title: "Week 3 Pres."
+author: "R08241220  Chen, Yen Ting"
+date: "2020/10/6"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##  **RP5**
+  Create the following data frame summarizing the results of a small experiment on 5 individuals testing the efficiency of a specific diet (drinking bubble tea only - feak data). 
+
+```{r, echo=TRUE}
+rm(list = ls())
+before_diet <- c(104, 95, 87, 77, 112)
+after_diet <- c(96, 91, 81, 75, 118)
+individuals <- c("subject_1", "subject_2", 'subject_3', "subject_4", 'subject_5')
+da <- data.frame(before_diet, after_diet, row.names = individuals)
+da
+```
+
+  Create another vector with the weight loss (in %) associated with subject no.
+
+```{r,echo=TRUE}
+da$weight_loss <- 100-((after_diet/before_diet)*100)
+da
+```
+
+What can you say on this bubble tea diet? 
+```{r}
+da
+summary(da)
+```
+The result suggests the bubble tea diet has a mean weight loss of 3.2 %. However, the varying results of bubble tea diet among individuals indicates that other factors might have their influences.
+
+---
+  Reformat the table by creating: a variable individual with the identity of the five individuals, a variable diet with two levels before and after, a variable weight containing the weight before and after the diet.
+
+
+```{r,echo=TRUE}
+library(tidyr)
+da$individual <- row.names(da) # extracts rownames and input them as a new variable
+nd1 <- da %>%  # long data
+  pivot_longer(before_diet:after_diet, names_to = "diet" ,values_to = "weight")
+nd1$diet <- as.factor(nd1$diet) # factorize "diet"
+nd1 # final result
+```
+
