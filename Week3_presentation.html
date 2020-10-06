@@ -385,30 +385,30 @@ da</code></pre>
 ## subject_4          77         75
 ## subject_5         112        118</code></pre>
 <p>Create another vector with the weight loss (in %) associated with subject no.</p>
-<pre class="r"><code>da$weight_loss &lt;- 100-((after_diet/before_diet)*100)
+<pre class="r"><code>da$weight_loss &lt;- (((after_diet-before_diet)/before_diet)*100)
 da</code></pre>
 <pre><code>##           before_diet after_diet weight_loss
-## subject_1         104         96    7.692308
-## subject_2          95         91    4.210526
-## subject_3          87         81    6.896552
-## subject_4          77         75    2.597403
-## subject_5         112        118   -5.357143</code></pre>
+## subject_1         104         96   -7.692308
+## subject_2          95         91   -4.210526
+## subject_3          87         81   -6.896552
+## subject_4          77         75   -2.597403
+## subject_5         112        118    5.357143</code></pre>
 <p>What can you say on this bubble tea diet?</p>
 <pre class="r"><code>da</code></pre>
 <pre><code>##           before_diet after_diet weight_loss
-## subject_1         104         96    7.692308
-## subject_2          95         91    4.210526
-## subject_3          87         81    6.896552
-## subject_4          77         75    2.597403
-## subject_5         112        118   -5.357143</code></pre>
+## subject_1         104         96   -7.692308
+## subject_2          95         91   -4.210526
+## subject_3          87         81   -6.896552
+## subject_4          77         75   -2.597403
+## subject_5         112        118    5.357143</code></pre>
 <pre class="r"><code>summary(da)</code></pre>
 <pre><code>##   before_diet    after_diet     weight_loss    
-##  Min.   : 77   Min.   : 75.0   Min.   :-5.357  
-##  1st Qu.: 87   1st Qu.: 81.0   1st Qu.: 2.597  
-##  Median : 95   Median : 91.0   Median : 4.211  
-##  Mean   : 95   Mean   : 92.2   Mean   : 3.208  
-##  3rd Qu.:104   3rd Qu.: 96.0   3rd Qu.: 6.897  
-##  Max.   :112   Max.   :118.0   Max.   : 7.692</code></pre>
+##  Min.   : 77   Min.   : 75.0   Min.   :-7.692  
+##  1st Qu.: 87   1st Qu.: 81.0   1st Qu.:-6.897  
+##  Median : 95   Median : 91.0   Median :-4.211  
+##  Mean   : 95   Mean   : 92.2   Mean   :-3.208  
+##  3rd Qu.:104   3rd Qu.: 96.0   3rd Qu.:-2.597  
+##  Max.   :112   Max.   :118.0   Max.   : 5.357</code></pre>
 <p>The result suggests the bubble tea diet has a mean weight loss of 3.2 %. However, the varying results of bubble tea diet among individuals indicates that other factors might have their influences.</p>
 <hr />
 <p>Reformat the table by creating: a variable individual with the identity of the five individuals, a variable diet with two levels before and after, a variable weight containing the weight before and after the diet.</p>
@@ -421,16 +421,16 @@ nd1 # final result</code></pre>
 <pre><code>## # A tibble: 10 x 4
 ##    weight_loss individual diet        weight
 ##          &lt;dbl&gt; &lt;chr&gt;      &lt;fct&gt;        &lt;dbl&gt;
-##  1        7.69 subject_1  before_diet    104
-##  2        7.69 subject_1  after_diet      96
-##  3        4.21 subject_2  before_diet     95
-##  4        4.21 subject_2  after_diet      91
-##  5        6.90 subject_3  before_diet     87
-##  6        6.90 subject_3  after_diet      81
-##  7        2.60 subject_4  before_diet     77
-##  8        2.60 subject_4  after_diet      75
-##  9       -5.36 subject_5  before_diet    112
-## 10       -5.36 subject_5  after_diet     118</code></pre>
+##  1       -7.69 subject_1  before_diet    104
+##  2       -7.69 subject_1  after_diet      96
+##  3       -4.21 subject_2  before_diet     95
+##  4       -4.21 subject_2  after_diet      91
+##  5       -6.90 subject_3  before_diet     87
+##  6       -6.90 subject_3  after_diet      81
+##  7       -2.60 subject_4  before_diet     77
+##  8       -2.60 subject_4  after_diet      75
+##  9        5.36 subject_5  before_diet    112
+## 10        5.36 subject_5  after_diet     118</code></pre>
 </div>
 
 

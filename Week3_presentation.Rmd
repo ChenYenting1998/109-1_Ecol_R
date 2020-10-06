@@ -24,7 +24,11 @@ da
   Create another vector with the weight loss (in %) associated with subject no.
 
 ```{r,echo=TRUE}
-da$weight_loss <- 100-((after_diet/before_diet)*100)
+da$weight_loss <-
+  (((after_diet-before_diet)/before_diet)*100)
+(after_diet-before_diet)/before_diet*100
+100-(after_diet/before_diet*100)
+
 da
 ```
 
