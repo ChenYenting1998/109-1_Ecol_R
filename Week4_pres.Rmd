@@ -1,0 +1,162 @@
+---
+title: "Week 4 pres."
+author: "R08241220  Chen, Yen Ting"
+date: "2020/10/10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Plotting Practice**
+  
+## Data
+  Three time series giving the monthly deaths from bronchitis, emphysema and asthma in the UK, 1974–1979, both sexes (ldeaths), males (mdeaths) and females (fdeaths).
+
+```{r, echo=T}
+rm(list = ls())
+da <- ldeaths # A time series data of monthly deaths from lung diseases in UK from 1974 to 1979; contains both sexes
+md <- mdeaths # male deaths
+fd <- fdeaths # female deaths
+```
+
+### Comparison between sexs and overall deaths.
+Plotting out the deaths of males, females, and the two combined throughout 1974-1979.
+
+```{r, echo=T}
+# Total deaths, male deaths, female deaths####
+# blank plot
+plot(da,
+     main = "Monthly Deaths From Lung Diseases in UK (1974-1979)",
+     xlab = "Year",
+     ylab = "Death Count",
+     ylim = range(da,md,fd),
+     type = "n")
+# adding lines
+lines(da, col = "Purple", lwd = 3) #total deaths
+lines(md, col = "Blue", lwd = 3) # male deaths
+lines(fd, col = "Red", lwd = 3) # female deaths
+legend(x = "topright", legend = c("Total Deaths", "Male Deaths", "Female Deaths"),
+       col = c("Purple", "Blue", "Red"),
+       lwd = 3)
+#dev.off()
+```
+1. Periodocity in all datasets.
+
+2. The death of males is significantly larger than that of females.
+
+### Comparison between years
+
+Let's examine the dataset first.
+```{r, echo = T}
+# examine the data
+ldeaths
+class(ldeaths)
+```
+
+A matrix-like structure wwould appear, yet it is not a matrix nor a data frame, it is a time series data. Therefore, there is need to modify the three datasets. 
+
+To reshape the data sets:
+
+`time()` extracts time from a time series data; returns years with decimals.
+
+`floor()` runs a filter; turning all numbers into integers
+
+`unique()` filters out repeated elements.
+
+
+```{r, echo=T}
+time(da)
+floor(time(da))
+unique(floor(time(da))) # extracting years
+```
+Regarding months, abbreviations of months already stored in R. 
+
+```{r, echo=T}
+# regarding months
+month.abb # returns abbreviated month names
+month.name # returns complete month names
+# these two are very useful. Gotta remember this lol
+
+time <- list(month.abb, unique(floor(time(da))))
+# a series of function to store time data into a list (so matrix()'s dimnames can load them)
+```
+
+Since the time range of the three datasets are identical, there should be no problem for using the same object in the `dimnames` argument.
+```{r, echo=T}
+# merges time data and no. of deaths back together
+# creates a new data frame 
+nd <- as.data.frame((matrix(da, 12, dimnames = time)))
+nmd <- as.data.frame((matrix(md, 12, dimnames = time)))
+nfd <- as.data.frame((matrix(fd, 12, dimnames = time)))
+```
+
+Now plotting with the reshaped datasets.
+```{r, echo=T}
+#
+par(mfrow = c(2,2))
+
+# total
+plot(nd[,1], # blank plot
+     main = "Comparison of Total Lung Disease Deaths Between Years",
+     type = "n",
+     ylab = "No. of Deaths",
+     xlab = "Months",
+     ylim = range(nd))
+for (i in 1:ncol(nd)) { # for loop for drawing all the years
+  lines(nd[,i], col = i, lwd = 3)
+}
+
+legend(x = "bottomleft", legend = colnames(nd), # legend
+       col = 1:ncol(nd), lwd = 3)
+
+# Male
+plot(nmd[,1], # blank plot
+     main = "Comparison of Male Lung Disease Deaths Between Years",
+     type = "n",
+     ylab = "No. of Deaths",
+     xlab = "Months",
+     ylim = range(nmd))
+for (i in 1:ncol(nmd)) { # for loop for drawing all the years
+  lines(nmd[,i], col = i, lwd = 3, lty = 3)
+}
+legend(x = "bottomleft", legend = colnames(nmd), # legend
+       col = 1:ncol(nmd), lwd = 3, lty = 3)
+
+# Female
+plot(nfd[,1], # blank plot
+     main = "Comparison of Female Lung Disease Deaths Between Years",
+     type = "n",
+     ylab = "No. of Deaths",
+     xlab = "Months",
+     ylim = range(nfd))
+
+for (i in 1:ncol(nfd)) { # for loop for drawing all the years
+  lines(nfd[,i], col = i, lwd = 3, lty = 4)
+}  
+legend(x = "bottomleft", legend = colnames(nfd), # legend
+       col = 1:ncol(nfd), lwd = 3, lty = 4)
+
+# total + male + female
+plot(nfd[,1], # blank plot
+     main = "Comparison of Female Lung Disease Deaths Between Years",
+     type = "n",
+     ylab = "No. of Deaths",
+     xlab = "Months",
+     ylim = range(nd, nfd))
+for (i in 1:ncol(nd)) { # for loop for drawing all the years
+  lines(nd[,i], col = 1, lwd = 3)
+}
+for (i in 1:ncol(nmd)) { # for loop for drawing all the years
+  lines(nmd[,i], col = 2, lwd = 3, lty = 3)
+}
+for (i in 1:ncol(nfd)) { # for loop for drawing all the years
+  lines(nfd[,i], col = 3, lwd = 3, lty = 4)
+}  
+legend(x = "topright", legend = c("Total Deaths", "Male Deaths", "Female Deaths"), # legend
+       col = 1:3, lwd = 3, lty = c(1,3,4))
+```
+1. The curvature looks identical within years and within sexes.
+
+2. Maximum deaths occur at winter; minimum deaths occur at summer.
