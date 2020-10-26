@@ -1,0 +1,59 @@
+---
+title: "Week6 Pres."
+author: "R08241220  Chen, Yen Ting"
+date: "2020/10/26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro
+I decide to plot the bathymetric map for my thesis.
+The topic of my thesis is the comparison of benthic communities of the Gaoping River and Pearl River continental shelf. 
+
+My strategy is simple: First, I plot out the bathymetric map with the introduced package -- `marmap`. After that, I add the coordinates and the names of the respective stations with the in-built functions of R (`graphics`).
+
+## 1. Bathymetric map
+Downloading data from NOAA
+```{r}
+rm(list = ls())
+library(marmap)
+ba <- getNOAA.bathy(lon1=111,lon2=124, lat1=20,lat2=26,resolution=1)
+```
+
+Creating a function of color palette for water depth color-coding.
+```{r}
+# generate a color gradient function for plot.bathy
+oc <- colorRampPalette(c('cyan', 'darkblue', "purple"))
+oc # returns a function; type in numbers and then the function will do its work
+te <- colorRampPalette(c("lightgreen", "darkgreen"))
+```
+
+Plotting it out.
+
+a. `deepest.isobath`, `shallowest.isobath` & `step` need to be work in tandem (which performs like a matrix).
+b. `bpal` inputs the color palette function with the depth. It works like this: list(c(depth range (`two integers; small to large`), `the color function`)
+```{r, fig.keep='all'}
+fi <- plot.bathy(ba, # data
+           image = T, # color the depth layers
+           deepest.isobath = c(-6000, -300, -100, 0), # deepest isobath
+           shallowest.isobath = c(-1000, -100, 0, 0), # shallowest isobath
+           step = c(2000, 100, 20, 0), # distance btw two isobaths
+           lwd = c(0.5, 1, 1, 2), # isobath line width
+           lty = c(1,1,1,1), # isobath line type
+           col = c("grey", "black", "black", "black"),
+           drawlabels = c(T,T,T,F), #whether plot the depth on the isobaths
+           land = T,
+           bpal = list(c(0, max(ba), te(100)),c(min(ba), 0, rev(oc(100)))) ) # a list of depth bounds and colors
+text(x = 121, y = 24, "Taiwan", cex = 1.2)
+text(x = 116, y = 25, "China", cex = 1.2)
+# input sample sites
+library(readxl)
+da <- read_xlsx("C:\\Users\\tumha\\Desktop\\Lab Work\\Field work\\LGD2006\\OR1_1242_LGD_2006_Station.xlsx",col_names = T)
+ss <- data.frame(da$Station, da$Longitude, da$Latitude)
+points(x = da$Longitude, y = da$Latitude, pch = 18, col = 2, cex = 2)
+text(x = da$Longitude, y = da$Latitude+0.5, da$Station, col = 2, cex = 0.8, font = 2)
+```
+
