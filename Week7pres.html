@@ -375,7 +375,7 @@ summary {
 <pre class="r"><code># Week 7 pres.
 rm(list = ls()) 
 
-LV.comp.pop.dyn &lt;- function(sp1,sp2,generation,growth.rate.1, growth.rate.2,K1,K2,N12.coefficient,N21.coefficient){
+LV &lt;- function(sp1,sp2,generation,growth.rate.1, growth.rate.2,K1,K2,N12.coefficient,N21.coefficient){
   N1 &lt;- sp1
   N2 &lt;- sp2
   for (i in 2:generation) {
@@ -386,7 +386,7 @@ LV.comp.pop.dyn &lt;- function(sp1,sp2,generation,growth.rate.1, growth.rate.2,K
   return(Dynamics)
 }
 
-q &lt;- LV.comp.pop.dyn(sp1 = 10, sp2 = ,10, generation = 30,
+q &lt;- LV(sp1 = 10, sp2 = ,10, generation = 30,
                 growth.rate.1 = 1.2, growth.rate.2 = 1.2,
                 K1 = 100, K2 = 100,
                 N12.coefficient = 1.2, N21.coefficient = 1.1)
