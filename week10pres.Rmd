@@ -1,0 +1,78 @@
+---
+title: "Week 10 Presentation"
+author: "Yen-Ting Chen"
+date: "2020/11/30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Loading `iris`
+
+Load `iris` and filter out all the other two species expect setosa.
+```{r}
+# Week 10 pres.
+rm(list = ls())
+data(iris) # measurement in centimeters
+library(dplyr)
+se <- iris %>% filter(Species == "setosa")
+```
+
+### Simple linear regression
+
+Let's say that I am interested in the relationship between sepal length and other factors.
+
+I first run `lm` on setosa's sepal length and width and see how it goes.
+
+```{r}
+# lm btw sepal length and width
+model1<- lm(Sepal.Length~Sepal.Width, se) # checking the relationship betwenn sepal width and length
+summary(model1)
+```
+Small p value from F statistics and strong significance of sepal width and the intercept. It is clear that there is a strong numerical relationship betweeen sepal length and width.
+
+A graphical illustration
+```{r}
+# graphical illustration
+library(ggplot2)
+ggplot(se) + aes(x = Sepal.Width, y = Sepal.Length) + geom_point() + # structure of ggplot
+  labs(title = "setosa", x = "Sepal Width (cm)", y = "Sepal Length (cm)") + # title, xlab, ylab 
+  stat_smooth(method = "lm", ) # reg line
+```
+
+### Multiple linear regression
+
+Now I am curious about how other factors interact with sepal length in the species setosa (numerically of course!).
+
+I run `lm` on all the other factors regarding setosa.
+
+```{r}
+# checking all the variables within setosa
+model2 <- lm(Sepal.Length~., se[,1:4])
+summary(model2)
+
+```
+What we see right here is significance in r statistics, yet only sepal width  and the associated intercept shows significance.
+
+Checking the prediction power between model1 and model2.
+```{r}
+sigma(model1)/mean(iris$Sepal.Length)
+sigma(model2)/mean(iris$Sepal.Length)
+```
+Model2 is slightly better than model1 (by 0.03%).
+
+### Model selection
+
+Now considering finding/selecting the best model.
+
+```{r}
+MASS::stepAIC(model2)
+fore <- MASS::stepAIC(model2, direction = "forward")
+back <- MASS::stepAIC(model2, direction = "backward")
+```
+
+The result of AIC told us that the more variables we include in the model, the higher the accuracy. 
+
+However, with the 0.03% residual error difference, I don't think the hard work of including more variables is worth the trouble.
